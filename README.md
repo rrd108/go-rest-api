@@ -30,4 +30,6 @@
 8. `go get github.com/githubnemo/CompileDaemon` and `go get github.com/githubnemo/CompileDaemon`
    So we can run it by `~/go/bin/CompileDaemon -command="./go-rest-api"`
 
+9. Create `launch.json` for debugging
+
 CORS
