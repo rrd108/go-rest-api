@@ -57,8 +57,6 @@ func UsersList(c *gin.Context) {
 		return
 	}
 
-	log.Println(token)
-
 	// let's check if the token is valid
 	err = db.QueryRow("SELECT id FROM users WHERE token = ?", token).Scan(&user.ID)
 	if err != nil {
