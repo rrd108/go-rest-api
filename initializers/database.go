@@ -1,32 +1,25 @@
 package initializers
 
 import (
-	"database/sql"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
-
-var db *sql.DB
 
 // HARDCODED
 var username = "root"
 var password = "123"
 var dbname = "rest-api"
 
-func init() {
-	var err error
-	db, err = sql.Open("mysql", username+":"+password+"@tcp(localhost:3306)/"+dbname)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// Test the connection
-	if err := db.Ping(); err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Database connection established")
-}
+var DB *gorm.DB
 
-func GetDB() *sql.DB {
-	return db
+func ConnectDB() {
+	var err error
+	dsn := username + ":" + password + "@tcp(127.0.0.1:3306)/" + dbname
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		log.Fatal("failed to connect database")
+	}
 }

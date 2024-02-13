@@ -32,4 +32,6 @@
 
 9. Create `launch.json` for debugging
 
+10. `go get -u gorm.io/gorm` and `go get -u gorm.io/driver/mysql`
+
 CORS
