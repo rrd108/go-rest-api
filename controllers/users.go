@@ -2,13 +2,13 @@ package controllers
 
 import (
 	"crypto/md5"
-	"database/sql"
 	"encoding/hex"
+	"errors"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rrd108/go-rest-api/initializers"
+	"gorm.io/gorm"
 )
 
 type LoginData struct {
@@ -19,12 +19,6 @@ type User struct {
 	ID    int    `json:"id"`
 	Email string `json:"email"`
 	Token string `json:"token"`
-}
-
-var user User
-
-func init() {
-	initializers.ConnectDB()
 }
 
 func UserLogin(c *gin.Context) {
@@ -40,10 +34,10 @@ func UserLogin(c *gin.Context) {
 	hash := md5.Sum([]byte(data.Password))
 	hashedUserPassword := hex.EncodeToString(hash[:])
 
-	// raw sql
-	initializers.DB.Raw("SELECT id, email, token FROM users WHERE email = ? AND password = ?", data.Email, hashedUserPassword).Scan(&user)
+	// orm using table
+	err = db.Table("users").Where("email = ? AND password = ?", data.Email, hashedUserPassword).First(&user).Error
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 			return
 		}
@@ -65,9 +59,9 @@ func UsersList(c *gin.Context) {
 
 	// let's check if the token is valid
 	// orm using table
-	initializers.DB.Table("users").Where("token = ?", token).First(&user)
+	err = db.Table("users").Where("token = ?", token).First(&user).Error
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			return
 		}
@@ -77,7 +71,7 @@ func UsersList(c *gin.Context) {
 	// let's get the list of users
 	var users []User
 	// orm using built-in method
-	initializers.DB.Find(&users)
+	db.Find(&users)
 
 	c.JSON(http.StatusOK, gin.H{"users": users})
 }
