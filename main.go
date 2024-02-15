@@ -12,6 +12,8 @@ func main() {
 	router.Use(middlewares.TokenAuthMiddleware())
 
 	router.GET("/products", controllers.ProductsList)
+	router.POST("/products", controllers.ProductsAdd)
+
 	router.POST("/users/login", controllers.UserLogin)
 	router.GET("/users", controllers.UsersList)
 

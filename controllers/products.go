@@ -25,3 +25,11 @@ func ProductsList(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"products": products})
 }
+
+func ProductsAdd(c *gin.Context) {
+	c.BindJSON(&product)
+	// orm using built-in method
+	db.Create(&product)
+
+	c.JSON(http.StatusCreated, gin.H{"product": product})
+}
