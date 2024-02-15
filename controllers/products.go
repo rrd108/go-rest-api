@@ -46,3 +46,14 @@ func ProductsEdit(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"product": product})
 }
+
+func ProductsDelete(c *gin.Context) {
+	var product Product
+	id := c.Param("id")
+	// orm using built-in method
+	db.First(&product, id)
+	// orm using built-in method
+	db.Delete(&product)
+
+	c.JSON(http.StatusOK, gin.H{"deleted": id})
+}
