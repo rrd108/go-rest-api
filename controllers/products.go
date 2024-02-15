@@ -33,3 +33,16 @@ func ProductsAdd(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"product": product})
 }
+
+func ProductsEdit(c *gin.Context) {
+	var product Product
+	id := c.Param("id")
+	// orm using built-in method
+	db.First(&product, id)
+
+	c.BindJSON(&product)
+	// orm using built-in method
+	db.Save(&product)
+
+	c.JSON(http.StatusOK, gin.H{"product": product})
+}

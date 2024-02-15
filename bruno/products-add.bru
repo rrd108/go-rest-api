@@ -4,23 +4,18 @@ meta {
   seq: 4
 }
 
-post {
-  url: http://localhost:16108/products
+patch {
+  url: http://localhost:16108/products/19
   body: json
   auth: none
 }
 
 headers {
-  ~Token: 270fsdg04%rt2f6$)b4eblok0dfgaurannga
+  Token: 270fsdg04%rt2f6$)b4eblok0dfgaurannga
 }
 
 body:json {
   {
-    "category": "Déli",
-    "name": "Citrom",
-    "description": "Magyar narancs",
-    "picture": "https://hur.webmania.cc/img/citrom.jpg",
-    "price": 1212,
-    "stock": 120
+    "category": "Déli gyümölcs"
   }
 }
