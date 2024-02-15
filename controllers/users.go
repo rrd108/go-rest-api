@@ -44,28 +44,9 @@ func UserLogin(c *gin.Context) {
 }
 
 func UsersList(c *gin.Context) {
-	var err error
-
-	// let's check if the request conatins a token header and if not reponse with unauthorized
-	token := c.GetHeader("Token")
-	if token == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-		return
-	}
-
-	// let's check if the token is valid
-	// orm using table
-	err = db.Table("users").Where("token = ?", token).First(&user).Error
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			return
-		}
-		log.Fatal(err)
-	}
 
 	// let's get the list of users
-	var users []User
+	var users []models.User
 	// orm using built-in method
 	db.Find(&users)
 
