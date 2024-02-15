@@ -8,17 +8,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rrd108/go-rest-api/models"
 	"gorm.io/gorm"
 )
 
 type LoginData struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
-}
-type User struct {
-	ID    int    `json:"id"`
-	Email string `json:"email"`
-	Token string `json:"token"`
 }
 
 func UserLogin(c *gin.Context) {
