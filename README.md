@@ -15,23 +15,21 @@
 
 1. Go extension for vscode
 
-2. Create `go/src/github.com/rrd108/go-rest-api`
+2. `go mod init github.com/rrd108/go-rest-api`
 
-3. `go mod init`
+3. `go get -u github.com/gin-gonic/gin` - download, **u**pdate and install the package
 
-4. `go get -u github.com/gin-gonic/gin` - download, **u**pdate and install the package
+4. Create main.go
 
-5. Create main.go
+5. `go get -u github.com/go-sql-driver/mysql`
 
-6. `go get -u github.com/go-sql-driver/mysql`
+6. login
 
-7. login
-
-8. `go get github.com/githubnemo/CompileDaemon` and `go get github.com/githubnemo/CompileDaemon`
+7. `go get github.com/githubnemo/CompileDaemon` and `go get github.com/githubnemo/CompileDaemon`
    So we can run it by `~/go/bin/CompileDaemon -command="./go-rest-api"`
 
-9. Create `launch.json` for debugging
+8. Create `launch.json` for debugging
 
-10. `go get -u gorm.io/gorm` and `go get -u gorm.io/driver/mysql`
+9. `go get -u gorm.io/gorm` and `go get -u gorm.io/driver/mysql`
 
-CORS
+10. `go get -u github.com/gin-contrib/cors`

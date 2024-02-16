@@ -16,8 +16,6 @@ type Product struct {
 	Stock       uint   `json:"stock"`
 }
 
-var product Product
-
 func ProductsList(c *gin.Context) {
 	var products []Product
 	// orm using built-in method
@@ -27,6 +25,7 @@ func ProductsList(c *gin.Context) {
 }
 
 func ProductsAdd(c *gin.Context) {
+	var product Product
 	c.BindJSON(&product)
 	// orm using built-in method
 	db.Create(&product)
