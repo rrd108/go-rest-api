@@ -13,7 +13,7 @@
 
 ## Steps
 
-1. Go extension for vscode
+1. Install Go and Go extension for vscode
 
 2. `go mod init github.com/rrd108/go-rest-api`
 
@@ -25,7 +25,7 @@
 
 6. login
 
-7. `go get github.com/githubnemo/CompileDaemon` and `go get github.com/githubnemo/CompileDaemon`
+7. `go get github.com/githubnemo/CompileDaemon` and `go install github.com/githubnemo/CompileDaemon`
    So we can run it by `~/go/bin/CompileDaemon -command="./go-rest-api"`
 
 8. Create `launch.json` for debugging
