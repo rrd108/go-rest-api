@@ -12,16 +12,15 @@ import (
 )
 
 var db *gorm.DB
-var user models.User
-var allowUnauthenticated = map[string][]string{"POST": {"/users/login"}, "GET": {"/products"}}
+var allowedUnauthenticated = map[string][]string{"POST": {"/users/login"}, "GET": {"/products"}}
 
 func init() {
 	db = internal.ConnectDB()
 }
 
 func isAllowedUnauthenticated(method string, path string) bool {
-	for _, url := range allowUnauthenticated[method] {
-		if path == url {
+	for _, url := range allowedUnauthenticated[method] {
+		if url == path {
 			return true
 		}
 	}
@@ -30,6 +29,7 @@ func isAllowedUnauthenticated(method string, path string) bool {
 
 func TokenAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		if isAllowedUnauthenticated(c.Request.Method, c.Request.URL.Path) {
 			c.Next()
 			return
@@ -42,15 +42,17 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		var user models.User
 		err := db.Table("users").Where("token = ?", token).First(&user).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
-				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 				c.Abort()
 				return
 			}
 			log.Fatal(err)
 		}
+		c.Set("user", user)
 
 		c.Next()
 	}

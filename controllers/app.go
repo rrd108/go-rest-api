@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var user models.User
 var db *gorm.DB
 
 func init() {

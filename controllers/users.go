@@ -30,7 +30,16 @@ func UserLogin(c *gin.Context) {
 	hash := md5.Sum([]byte(data.Password))
 	hashedUserPassword := hex.EncodeToString(hash[:])
 
+	currentUser, exists := c.Get("user")
+	if exists {
+		user, ok := currentUser.(models.User)
+		if ok {
+			c.JSON(http.StatusOK, gin.H{"user": user})
+		}
+	}
+
 	// orm using table
+	var user models.User
 	err = db.Table("users").Where("email = ? AND password = ?", data.Email, hashedUserPassword).First(&user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -39,15 +48,15 @@ func UserLogin(c *gin.Context) {
 		}
 		log.Fatal(err)
 	}
+	if user.ID > 0 {
+		c.Set("user", user)
+	}
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
 func UsersList(c *gin.Context) {
-
-	// let's get the list of users
 	var users []models.User
-	// orm using built-in method
 	db.Find(&users)
 
 	c.JSON(http.StatusOK, gin.H{"users": users})
